@@ -5,12 +5,10 @@ import re
 
 
 class macChanger:
-    def __init__(self, interface):
-        self.interface = interface
-        self.current_mac = self.showCurrentMac(self.interface)
-
-    def __init__(self):
-        pass
+    def __init__(self, interface, new_mac):
+        self.interface = interface # Interface Name
+        self.current_mac = self.showCurrentMac(self.interface) # Gets Current MAC Address
+	self.new_mac = new_mac # New MAC Address
 
     def showInterfaces():
         # Fetching all interfaces
@@ -43,3 +41,10 @@ class macChanger:
         print("\n[+] Current MAC Address : " + current_mac[0])
         # Returns Current MAC Address
         return current_mac
+
+    def dependancyCheck():
+	# checks net-tools installation
+	out = subprocess.check_output(["ifconfig"])
+	ls = re.findall(r"flag",str(out))
+	''' It is Not Completed '''
+	
