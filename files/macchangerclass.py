@@ -5,31 +5,32 @@ import re
 
 
 class MacChanger:
-    def __init__(self, interface):
+    def __init__(self, interface, mac=None):
         self.interface = interface
         self.currentmac = self.getCurrMac()
-        self.newmac = self.askNewMac()
+        self.newmac = self.askNewMac(mac)
 
     def getCurrMac(self):
-        res = subprocess.check_output(['ifconfig', self.interface],stderr=subprocess.PIPE).decode()
+        res = subprocess.check_output(['ifconfig', self.interface], stderr=subprocess.PIPE).decode()
         res = re.findall(r'\w\w:\w\w:\w\w:\w\w:\w\w:\w\w', res)[0]
         print('[+] Current MAC of Device ' + self.interface + ' is : ' + res)
         return res
 
-    def askNewMac(self):
-        f=0
-        lst=['0','1','2','3','4','5','6','7','8','9','a','b','c','e','d','f',':']
-        nm = input('[+] Enter New MAC Address to Spoof : ')
+    def askNewMac(self, nm=None):
+        f = 0
+        lst = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'e', 'd', 'f', ':']
+        if nm is None:
+            nm = input('[+] Enter New MAC Address to Spoof : ')
         nm = nm.lower()
         for x in nm:
             if x not in lst:
                 f = 1
         t = re.findall(r'\w\w:\w\w:\w\w:\w\w:\w\w:\w\w', nm)
-        if t and f==0:
+        if t and f == 0:
             return nm
         else:
             print('[-] The Entered MAC is invalid eg: aa:aa:aa:aa:aa:aa')
-            self.askNewMac()
+            self.newmac = self.askNewMac()
 
     def changeMac(self):
         subprocess.call(['ifconfig', self.interface, 'down'])

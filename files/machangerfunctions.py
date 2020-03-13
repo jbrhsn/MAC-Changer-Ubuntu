@@ -34,8 +34,9 @@ def showInterfaces():
     return res
 
 
-def selectInterface(interfaces):
-    x = input('\n[+] Enter the name of inteface : ')
+def selectInterface(interfaces, x=None):
+    if x is None:
+        x = input('\n[+] Enter the name of inteface : ')
     if x in interfaces:
         return x
     else:
@@ -86,7 +87,7 @@ def commandLineArgs():
     pass
 
 
-def manage():
+def managePrompt():
     dispTitle()
     dispInfo()
     dispUsage()
@@ -103,4 +104,3 @@ def manage():
     obj = macchangerclass.MacChanger(ifc)
     obj.getCurrMac()
     obj.changeMac()
-    obj.resetMAC()
