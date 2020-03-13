@@ -1,9 +1,13 @@
+#!/usr/bin/env python3
+
+import os
 import subprocess
 import re
+import macchangerclass
 
 
 def dispTitle():
-    print('''\n    MAC - CHANGER\n----------------------\n''')
+    print('''\n MAC - CHANGER\n----------------''')
 
 
 def dispInfo():
@@ -27,7 +31,7 @@ def showInterfaces():
     print('[+] Available Intefaces in Your System\n')
     for i in range(len(res)):
         print("[" + str(i + 1) + "] " + res[i])
-    selectInterface(res)
+    return res
 
 
 def selectInterface(interfaces):
@@ -36,15 +40,67 @@ def selectInterface(interfaces):
         return x
     else:
         print('[-] Invalid Interface Name')
-        selectInterface(interfaces)
+        return False
 
 
 def requirementCheck():
-    pass
+    res = subprocess.check_output(['apt', 'list', '--installed'], stderr=subprocess.PIPE).decode()
+    print('\n[+] Requirements Checking In Progress ... \n')
+    flag = 0
+
+    if 'net-tools' in res:
+        print('++++ Net-Tools is installed')
+    else:
+        print('---- Net-Tools is not installed')
+        flag = 1
+
+    if 'python3' in res:
+        print('++++ Python3 is installed')
+    else:
+        print('---- Python3 is not installed')
+        flag = 1
+
+    if 'python3-pip' in res:
+        print('++++ Pip3 is installed')
+    else:
+        print('---- Pip3 is not installed')
+        flag = 1
+
+    if flag == 1:
+        print('\n[-] Requirements Not Met. Install the requirements using - sudo apt install packagename')
+        return False
+    else:
+        return True
+
+
+def rootCheck():
+    if os.geteuid() == 0:
+        print('\n[+] You have root permission. Go on')
+        return True
+    else:
+        print('\n[-] Root permission not found. Please Run macchanger as root (sudo)')
+        return False
 
 
 def commandLineArgs():
     pass
 
 
-showInterfaces()
+def manage():
+    dispTitle()
+    dispInfo()
+    dispUsage()
+    if not rootCheck():
+        print('[-] Exiting Program ..')
+        return
+    if not requirementCheck():
+        print('[-] Exiting Program ..')
+        return
+    ifcs = showInterfaces()
+    ifc = selectInterface(ifcs)
+    while not ifc:
+        ifc = selectInterface(ifcs)
+    obj = macchangerclass.MacChanger(ifc)
+    obj.getCurrMac()
+    obj.changeMac()
+    obj.resetMAC()
