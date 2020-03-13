@@ -20,9 +20,31 @@ def dispUsage():
 
 
 def showInterfaces():
-    res = str(subprocess.check_output(['ifconfig']))
-    res = re.findall(r"(\w)(?::)", res)
-    print(res)
+    res = subprocess.check_output(["ifconfig"])
+    res = res.decode()
+    res = re.findall(r"(\w*)(?:: flags=)", res)
+    res.remove('lo')
+    print('[+] Available Intefaces in Your System\n')
+    for i in range(len(res)):
+        print("[" + str(i + 1) + "] " + res[i])
+    selectInterface(res)
+
+
+def selectInterface(interfaces):
+    x = input('\n[+] Enter the name of inteface : ')
+    if x in interfaces:
+        return x
+    else:
+        print('[-] Invalid Interface Name')
+        selectInterface(interfaces)
+
+
+def requirementCheck():
+    pass
+
+
+def commandLineArgs():
+    pass
 
 
 showInterfaces()
