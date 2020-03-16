@@ -3,7 +3,7 @@
 # Description
 
 This tool will change the Mac Address of your gadget temporarily. It is produced for protection/privacy concerned users.
->It is built for Ubuntu. However you can use it in any ubuntu based linux distro.
+<h5>It is built for Ubuntu. However you can use it in any ubuntu based linux distro.
 
 # Disclaimer
 
