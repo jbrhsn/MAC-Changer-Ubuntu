@@ -34,12 +34,12 @@ cd MAC-Changer-Ubuntu
 
 3. Run the program and escape from nasty hackers
 
-** Prompt Mode : Just Enter The Details asked in the prompt 
+    - Prompt Mode : Just Enter The Details asked in the prompt 
 
-``` sudo python3 macchanger.py```
+      ``` sudo python3 macchanger.py```
 
-** Command Line Mode : You can use the command mode if you know what exactly is the change by typing the following from our directory
-
-``` sudo python3 macchanger.py  [interface name]    [New MAC Address to Spoof] ```
+    - Command Line Mode : You can Also use the command mode 
+    
+      ``` sudo python3 macchanger.py  [interface name]    [New MAC Address to Spoof] ```
 
 #### Made by JBRHSN
